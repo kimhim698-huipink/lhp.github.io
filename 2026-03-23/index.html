@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>消费公司年报与交流汇总 | 2026-03-23</title>
+  <style>
+    :root {
+      --bg: #f5f0e8;
+      --paper: rgba(255, 251, 244, 0.88);
+      --panel: rgba(252, 248, 241, 0.92);
+      --line: rgba(74, 61, 48, 0.14);
+      --ink: #2f261f;
+      --muted: #6b5f53;
+      --accent: #945f2d;
+      --accent-2: #0f5c58;
+      --accent-3: #8b2d3b;
+      --gold: #c59c52;
+      --shadow: 0 24px 60px rgba(47, 38, 31, 0.08);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --max: 1380px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Avenir Next", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(197, 156, 82, 0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(15, 92, 88, 0.12), transparent 24%),
+        linear-gradient(180deg, #f8f4ec 0%, #efe7da 100%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .shell {
+      width: min(var(--max), calc(100vw - 40px));
+      margin: 0 auto;
+      padding: 32px 0 56px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      border-radius: 36px;
+      padding: 38px 40px 34px;
+      background:
+        linear-gradient(135deg, rgba(255, 252, 247, 0.95), rgba(250, 242, 231, 0.82)),
+        linear-gradient(120deg, rgba(197, 156, 82, 0.12), rgba(15, 92, 88, 0.08));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -60px -80px auto;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(148, 95, 45, 0.18), rgba(148, 95, 45, 0));
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(47, 38, 31, 0.06);
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      font-family: "Songti SC", "STSong", "Noto Serif SC", Georgia, serif;
+      letter-spacing: -0.02em;
+    }
+
+    h1 {
+      margin-top: 18px;
+      font-size: clamp(34px, 5vw, 56px);
+      line-height: 1.06;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 28px;
+      margin-top: 22px;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .mini-stat {
+      padding: 16px 18px;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(47, 38, 31, 0.08);
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .mini-stat .label {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .mini-stat .value {
+      margin-top: 6px;
+      font-size: 23px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .nav {
+      position: sticky;
+      top: 10px;
+      z-index: 20;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 20px 0 28px;
+      padding: 14px;
+      border-radius: 20px;
+      background: rgba(255, 250, 242, 0.72);
+      border: 1px solid rgba(47, 38, 31, 0.08);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 30px rgba(47, 38, 31, 0.05);
+    }
+
+    .nav a {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(47, 38, 31, 0.05);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      transition: 160ms ease;
+    }
+
+    .nav a:hover {
+      transform: translateY(-1px);
+      color: var(--ink);
+      background: rgba(148, 95, 45, 0.12);
+    }
+
+    section {
+      margin-top: 28px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: end;
+      margin-bottom: 16px;
+    }
+
+    .section-head p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      border-radius: var(--radius-xl);
+      background: var(--paper);
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .signal-card {
+      padding: 22px 22px 20px;
+    }
+
+    .signal-card .tag {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .tag.gold { background: linear-gradient(135deg, #c59c52, #9e7531); }
+    .tag.green { background: linear-gradient(135deg, #0f5c58, #2d7d78); }
+    .tag.red { background: linear-gradient(135deg, #8b2d3b, #b45463); }
+
+    .signal-card h3 {
+      margin-top: 14px;
+      font-size: 25px;
+      line-height: 1.18;
+    }
+
+    .signal-card p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border-radius: var(--radius-xl);
+      background: var(--panel);
+      border: 1px solid rgba(47, 38, 31, 0.08);
+      box-shadow: var(--shadow);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1040px;
+    }
+
+    th,
+    td {
+      padding: 18px 16px;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+      line-height: 1.65;
+      text-align: left;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      background: rgba(247, 241, 232, 0.95);
+      z-index: 1;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .company-stack {
+      display: grid;
+      gap: 20px;
+    }
+
+    .company-card {
+      padding: 26px;
+    }
+
+    .company-top {
+      display: grid;
+      grid-template-columns: 1.25fr 0.9fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .title-line {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .ticker {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(47, 38, 31, 0.06);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .thesis {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .metric-panel {
+      display: grid;
+      gap: 12px;
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(249, 243, 234, 0.92));
+      border: 1px solid rgba(47, 38, 31, 0.08);
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .metric {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(47, 38, 31, 0.05);
+    }
+
+    .metric .k {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .metric .v {
+      margin-top: 5px;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .company-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .subpanel {
+      padding: 18px 18px 16px;
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid rgba(47, 38, 31, 0.07);
+    }
+
+    .subpanel h4 {
+      margin: 0 0 12px;
+      font-size: 17px;
+      font-family: "Songti SC", "STSong", "Noto Serif SC", Georgia, serif;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    li {
+      margin: 0 0 10px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .source-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 18px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(148, 95, 45, 0.1);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .foot {
+      margin-top: 26px;
+      padding: 22px 24px;
+      border-radius: var(--radius-xl);
+      background: rgba(47, 38, 31, 0.9);
+      color: rgba(255, 251, 244, 0.88);
+    }
+
+    .foot p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 1100px) {
+      .hero-grid,
+      .company-top,
+      .company-body,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        width: min(var(--max), calc(100vw - 20px));
+        padding-top: 16px;
+      }
+
+      .hero,
+      .company-card {
+        padding: 22px 18px;
+      }
+
+      .nav {
+        top: 6px;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .nav {
+        position: static;
+        box-shadow: none;
+      }
+
+      .card,
+      .table-wrap,
+      .hero {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="hero" id="top">
+      <div class="eyebrow">AlphaPai 消费跟踪 · 领导阅读版 · 2026-03-23</div>
+      <h1>消费公司年报与交流汇总</h1>
+      <div class="hero-grid">
+        <p>
+          本页汇总 6 家已完成的消费公司年报点评与公司交流口径，便于快速阅读和横向比较。
+          结构上先看一页结论，再看估值矩阵，最后进入分公司深读。所有结论均基于 AlphaPai 召回的年报公告、
+          业绩会纪要和卖方点评整理，未混用外部研究材料。
+        </p>
+        <div class="hero-side">
+          <div class="mini-stat">
+            <div class="label">覆盖公司</div>
+            <div class="value">老铺黄金 / 乐舒适 / 布鲁可 / 锅圈 / 巨子生物 / 亚朵</div>
+          </div>
+          <div class="mini-stat">
+            <div class="label">当前主线</div>
+            <div class="value">高增兑现、修复反转、第二曲线、估值重估</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <a href="#signals">领导速览</a>
+      <a href="#matrix">横向矩阵</a>
+      <a href="#laopu">老铺黄金</a>
+      <a href="#leshu">乐舒适</a>
+      <a href="#bulu">布鲁可</a>
+      <a href="#guoquan">锅圈</a>
+      <a href="#jzsw">巨子生物</a>
+      <a href="#atour">亚朵</a>
+    </div>
+
+    <div id="signals">
+      <div class="section-head">
+        <div>
+          <h2>领导速览</h2>
+          <p>如果只看 3 分钟，先看这一页。这里把当前最值得优先关注的逻辑按“景气度、确定性、修复弹性”做了拆分。</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="card signal-card">
+          <span class="tag gold">景气最强</span>
+          <h3>老铺黄金</h3>
+          <p>25 年报只是验证预告，真正超预期的是 26Q1 收入和利润再度大幅抬升。当前主线是品牌高端化兑现后，市场开始重新定价长期空间。</p>
+        </div>
+        <div class="card signal-card">
+          <span class="tag green">稳健高增</span>
+          <h3>乐舒适 / 亚朵 / 布鲁可</h3>
+          <p>三家公司都属于主业清晰、第二曲线已开始兑现的类型。乐舒适看非洲基本盘+女性护理/拉美，亚朵看酒店+零售双轮，布鲁可看出海+16+与积木车。</p>
+        </div>
+        <div class="card signal-card">
+          <span class="tag red">修复与重估</span>
+          <h3>巨子生物 / 锅圈</h3>
+          <p>巨子生物更偏“品牌修复+医美新曲线”，锅圈更偏“利润率释放+平台化延展”。两者都已从单一旧框架切换到新估值叙事，但验证节奏仍关键。</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="matrix">
+      <div class="section-head">
+        <div>
+          <h2>横向矩阵</h2>
+          <p>用同一口径看 2025A、26-27E 与当前估值，统一为“收入、利润、人民币市值、PE、当前主线”。</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>公司</th>
+              <th>25A 核心结果</th>
+              <th>26E / 27E 预期</th>
+              <th>最新市值</th>
+              <th>26E / 27E PE</th>
+              <th>当前主线</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>老铺黄金</strong></td>
+              <td>收入 273.0 亿元，净利润 48.7 亿元；26Q1 指引再超预期</td>
+              <td>收入 421.5 / 535.1 亿元，同比 +54.4% / +27.0%；净利润 89.0 / 112.5 亿元，同比 +82.9% / +26.4%</td>
+              <td>949.4 亿元人民币</td>
+              <td>10.7x / 8.4x</td>
+              <td>高端品牌势能继续兑现，26Q1 实质性超预期</td>
+            </tr>
+            <tr>
+              <td><strong>乐舒适</strong></td>
+              <td>收入 5.67 亿美元，净利润 1.21 亿美元</td>
+              <td>收入 6.45 / 7.50 亿美元，同比 +13.8% / +16.3%；净利润 1.32 / 1.54 亿美元，同比 +9.1% / +16.7%</td>
+              <td>176.7 亿港元</td>
+              <td>17.2x / 14.7x</td>
+              <td>非洲基本盘稳固，女性护理与拉美加速放量</td>
+            </tr>
+            <tr>
+              <td><strong>布鲁可</strong></td>
+              <td>收入 29.1 亿元，经调整净利润 6.75 亿元</td>
+              <td>收入 38.5 / 47.5 亿元，同比 +32.2% / +23.4%；经调整净利润 8.5 / 10.7 亿元，同比 +25.9% / +25.9%</td>
+              <td>133.8 亿元人民币</td>
+              <td>15.8x / 12.5x</td>
+              <td>出海、16+、积木车共同驱动第二成长曲线</td>
+            </tr>
+            <tr>
+              <td><strong>锅圈</strong></td>
+              <td>收入 78.1 亿元，净利润 4.54 亿元，核心经营利润 4.61 亿元</td>
+              <td>收入 98.0 / 116.0 亿元，同比 +25.5% / +18.4%；净利润 6.2 / 7.7 亿元，同比 +36.6% / +24.2%</td>
+              <td>89.1 亿元人民币</td>
+              <td>14.4x / 11.6x</td>
+              <td>从加盟扩张切到“店效+2B+多场景平台”框架</td>
+            </tr>
+            <tr>
+              <td><strong>巨子生物</strong></td>
+              <td>收入 55.2 亿元，归母净利润 19.15 亿元，短期承压</td>
+              <td>收入 61.1 / 69.3 亿元，同比 +10.7% / +13.4%；归母净利润 19.6 / 21.8 亿元，同比 +2.3% / +11.2%</td>
+              <td>256.8 亿元人民币</td>
+              <td>13.1x / 11.8x</td>
+              <td>主业修复叠加医美商业化，重新切回成长股框架</td>
+            </tr>
+            <tr>
+              <td><strong>亚朵</strong></td>
+              <td>收入 97.9 亿元，经调整净利润 17.53 亿元</td>
+              <td>收入 119.0 / 142.5 亿元，同比 +21.6% / +19.7%；经调整净利润 21.6 / 25.9 亿元，同比 +23.2% / +19.9%</td>
+              <td>370.0 亿元人民币</td>
+              <td>17.1x / 14.3x</td>
+              <td>酒店+零售双轮高增，品牌升级和会员协同继续强化</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="company-stack">
+      <div class="card company-card" id="laopu">
+        <div class="company-top">
+          <div>
+            <div class="title-line">
+              <h2>老铺黄金</h2>
+              <span class="ticker">高景气 / 高兑现</span>
+            </div>
+            <p class="thesis">25 年报符合预期，但真正的重点在 26Q1 收入和利润再度大超预期。当前市场核心不再是“能不能涨”，而是高景气持续多久，以及高金价回落后动销韧性如何。</p>
+          </div>
+          <div class="metric-panel">
+            <div class="metric-row">
+              <div class="metric"><div class="k">25A 收入</div><div class="v">273.0 亿元</div></div>
+              <div class="metric"><div class="k">25A 净利润</div><div class="v">48.7 亿元</div></div>
+            </div>
+            <div class="metric-row">
+              <div class="metric"><div class="k">26E / 27E 净利润</div><div class="v">89.0 / 112.5 亿元</div></div>
+              <div class="metric"><div class="k">26E / 27E PE</div><div class="v">10.7x / 8.4x</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="company-body">
+          <div class="subpanel">
+            <h4>26-27 年预期与观点</h4>
+            <ul>
+              <li>预计 2026E/2027E 收入分别为 421.5 / 535.1 亿元，同比分别增长 54.4% / 27.0%；净利润分别为 89.0 / 112.5 亿元，同比分别增长 82.9% / 26.4%。</li>
+              <li>按 2026-03-20 收盘价 611 港元计，对应人民币市值约 949.4 亿元，26E/27E PE 约 10.7x / 8.4x。</li>
+              <li>评级观点维持中性偏积极，更适合按“回调布局”而非追高交易来理解。</li>
+            </ul>
+          </div>
+          <div class="subpanel">
+            <h4>风险点</h4>
+            <ul>
+              <li>金价大幅波动。</li>
+              <li>核心门店高基数压力及新店爬坡不及预期。</li>
+              <li>高端消费景气度波动。</li>
+            </ul>
+          </div>
+        </div>
+        <a class="source-link" href="./老铺黄金_2025年报及2026Q1财务数据更新点评_20260323.md">查看原始点评文档</a>
+      </div>
+
+      <div class="card company-card" id="leshu">
+        <div class="company-top">
+          <div>
+            <div class="title-line">
+              <h2>乐舒适</h2>
+              <span class="ticker">非洲快消 / 第二曲线</span>
+            </div>
+            <p class="thesis">25 年年报超预期，主业不仅稳，而且后八个月还在提速。非洲婴儿护理仍是基本盘，女性护理和拉美市场已经从“讲逻辑”走向“出结果”。</p>
+          </div>
+          <div class="metric-panel">
+            <div class="metric-row">
+              <div class="metric"><div class="k">25A 收入</div><div class="v">5.67 亿美元</div></div>
+              <div class="metric"><div class="k">25A 净利润</div><div class="v">1.21 亿美元</div></div>
+            </div>
+            <div class="metric-row">
+              <div class="metric"><div class="k">26E / 27E 净利润</div><div class="v">1.32 / 1.54 亿美元</div></div>
+              <div class="metric"><div class="k">26E / 27E PE</div><div class="v">17.2x / 14.7x</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="company-body">
+          <div class="subpanel">
+            <h4>26-27 年预期与观点</h4>
+            <ul>
+              <li>预计 2026E/2027E 收入分别约为 6.45 / 7.50 亿美元，同比分别增长 13.8% / 16.3%；净利润分别约为 1.32 / 1.54 亿美元，同比分别增长 9.1% / 16.7%。</li>
+              <li>按最新可核验收盘价，对应人民币市值约 163.7 亿元，26E/27E PE 约 17.2x / 14.7x。</li>
+              <li>评级观点维持中性偏积极，核心看点仍是非洲基本盘稳固下，女性护理、拉美和终端精细化运营打开第二成长曲线。</li>
+            </ul>
+          </div>
+          <div class="subpanel">
+            <h4>风险点</h4>
+            <ul>
+              <li>汇率波动与原材料价格上涨。</li>
+              <li>新市场爬坡不及预期及地缘政治扰动。</li>
+              <li>份额优先策略下利润率波动加大。</li>
+            </ul>
+          </div>
+        </div>
+        <a class="source-link" href="./乐舒适_业绩点评与初步模型_20260323.md">查看原始点评文档</a>
+      </div>
+
+      <div class="card company-card" id="bulu">
+        <div class="company-top">
+          <div>
+            <div class="title-line">
+              <h2>布鲁可</h2>
+              <span class="ticker">潮玩积木 / 出海扩张</span>
+            </div>
+            <p class="thesis">25 年收入基本符合预期、利润略超预期。主线已经从“单一 IP 驱动”切向“多 IP、多年龄层、多区域”共同驱动，第二成长曲线越来越清晰。</p>
+          </div>
+          <div class="metric-panel">
+            <div class="metric-row">
+              <div class="metric"><div class="k">25A 收入</div><div class="v">29.1 亿元</div></div>
+              <div class="metric"><div class="k">25A 经调净利润</div><div class="v">6.75 亿元</div></div>
+            </div>
+            <div class="metric-row">
+              <div class="metric"><div class="k">26E / 27E 经调净利润</div><div class="v">8.5 / 10.7 亿元</div></div>
+              <div class="metric"><div class="k">26E / 27E PE</div><div class="v">15.8x / 12.5x</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="company-body">
+          <div class="subpanel">
+            <h4>26-27 年预期与观点</h4>
+            <ul>
+              <li>预计 2026E/2027E 收入分别约为 38.5 / 47.5 亿元，同比分别增长 32.2% / 23.4%；经调整净利润分别约为 8.5 / 10.7 亿元，同比分别增长 25.9% / 25.9%。</li>
+              <li>按最新可核验收盘价，对应人民币市值约 133.8 亿元，26E/27E 经调整 PE 约 15.8x / 12.5x。</li>
+              <li>评级观点维持中性偏积极，后续仍重点看出海、积木车、16+ 和全球 IP 扩张带动收入高增。</li>
+            </ul>
+          </div>
+          <div class="subpanel">
+            <h4>风险点</h4>
+            <ul>
+              <li>主要 IP 授权续期与库存管理。</li>
+              <li>海外扩张不及预期。</li>
+              <li>女性向产品孵化偏慢及平价带继续扩张对 ASP 和毛利率的压制。</li>
+            </ul>
+          </div>
+        </div>
+        <a class="source-link" href="./布鲁可_2025年报及公司交流核心要点_20260323.md">查看原始点评文档</a>
+      </div>
+
+      <div class="card company-card" id="guoquan">
+        <div class="company-top">
+          <div>
+            <div class="title-line">
+              <h2>锅圈</h2>
+              <span class="ticker">社区餐饮零售 / 平台化</span>
+            </div>
+            <p class="thesis">25 年利润高增兑现，市场开始把锅圈从“火锅烧烤食材加盟店”切换成“社区央厨+多场景家庭餐饮解决方案平台”来定价。</p>
+          </div>
+          <div class="metric-panel">
+            <div class="metric-row">
+              <div class="metric"><div class="k">25A 收入</div><div class="v">78.1 亿元</div></div>
+              <div class="metric"><div class="k">25A 净利润</div><div class="v">4.54 亿元</div></div>
+            </div>
+            <div class="metric-row">
+              <div class="metric"><div class="k">26E / 27E 净利润</div><div class="v">6.2 / 7.7 亿元</div></div>
+              <div class="metric"><div class="k">26E / 27E PE</div><div class="v">14.4x / 11.6x</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="company-body">
+          <div class="subpanel">
+            <h4>26-27 年预期与观点</h4>
+            <ul>
+              <li>预计 2026E/2027E 收入分别约为 98.0 / 116.0 亿元，同比分别增长 25.5% / 18.4%；净利润分别约为 6.2 / 7.7 亿元，同比分别增长 36.6% / 24.2%。</li>
+              <li>按最新可核验收盘价，对应人民币市值约 89.1 亿元，26E/27E PE 约 14.4x / 11.6x。</li>
+              <li>评级观点维持中性偏积极，后续核心验证点在于门店扩张、店效改善和多场景延展能否继续共振。</li>
+            </ul>
+          </div>
+          <div class="subpanel">
+            <h4>风险点</h4>
+            <ul>
+              <li>开店不及预期与加盟商盈利能力波动。</li>
+              <li>消费景气度下行。</li>
+              <li>其他渠道占比提升对毛利率的压制，以及食品安全和供应链管理风险。</li>
+            </ul>
+          </div>
+        </div>
+        <a class="source-link" href="./锅圈_2025年报及公司交流核心要点_20260323.md">查看原始点评文档</a>
+      </div>
+
+      <div class="card company-card" id="jzsw">
+        <div class="company-top">
+          <div>
+            <div class="title-line">
+              <h2>巨子生物</h2>
+              <span class="ticker">修复反转 / 医美新曲线</span>
+            </div>
+            <p class="thesis">25 年进入增长放缓期，但更像高盈利公司做渠道和品牌校正，而不是盈利模式失效。2026 年主线是主业修复与医美商业化能否同步落地。</p>
+          </div>
+          <div class="metric-panel">
+            <div class="metric-row">
+              <div class="metric"><div class="k">25A 收入</div><div class="v">55.2 亿元</div></div>
+              <div class="metric"><div class="k">25A 归母净利润</div><div class="v">19.15 亿元</div></div>
+            </div>
+            <div class="metric-row">
+              <div class="metric"><div class="k">26E / 27E 归母净利润</div><div class="v">19.6 / 21.8 亿元</div></div>
+              <div class="metric"><div class="k">26E / 27E PE</div><div class="v">13.1x / 11.8x</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="company-body">
+          <div class="subpanel">
+            <h4>26-27 年预期与观点</h4>
+            <ul>
+              <li>预计 2026E/2027E 收入分别约为 61.1 / 69.3 亿元，同比分别增长 10.7% / 13.4%；归母净利润分别约为 19.6 / 21.8 亿元，同比分别增长 2.3% / 11.2%。</li>
+              <li>按 2026-03-23 收盘价 29.72 港元计，对应人民币市值约 256.8 亿元，26E/27E PE 约 13.1x / 11.8x。</li>
+              <li>评级观点维持中性偏积极，后续核心看点在于护肤主业修复节奏与医美产品商业化进度能否同步兑现。</li>
+            </ul>
+          </div>
+          <div class="subpanel">
+            <h4>风险点</h4>
+            <ul>
+              <li>新品不及预期与医美商业化推进偏慢。</li>
+              <li>品牌修复进度低于预期及行业价格竞争加剧。</li>
+              <li>原料和投放成本上行。</li>
+            </ul>
+          </div>
+        </div>
+        <a class="source-link" href="./巨子生物_2025年报及公司交流核心要点_20260323.md">查看原始点评文档</a>
+      </div>
+
+      <div class="card company-card" id="atour">
+        <div class="company-top">
+          <div>
+            <div class="title-line">
+              <h2>亚朵</h2>
+              <span class="ticker">酒店 + 零售双轮</span>
+            </div>
+            <p class="thesis">25 年收入和利润继续高增，Q4 利润率略超市场预期。零售收入占比已接近四成，亚朵正从单纯酒店公司升级为“住宿 + 生活方式零售”平台。</p>
+          </div>
+          <div class="metric-panel">
+            <div class="metric-row">
+              <div class="metric"><div class="k">25A 收入</div><div class="v">97.9 亿元</div></div>
+              <div class="metric"><div class="k">25A 经调净利润</div><div class="v">17.53 亿元</div></div>
+            </div>
+            <div class="metric-row">
+              <div class="metric"><div class="k">26E / 27E 经调净利润</div><div class="v">21.6 / 25.9 亿元</div></div>
+              <div class="metric"><div class="k">26E / 27E PE</div><div class="v">17.1x / 14.3x</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="company-body">
+          <div class="subpanel">
+            <h4>26-27 年预期与观点</h4>
+            <ul>
+              <li>预计 2026E/2027E 收入分别约为 119.0 / 142.5 亿元，同比分别增长 21.6% / 19.7%；经调整净利润分别约为 21.6 / 25.9 亿元，同比分别增长 23.2% / 19.9%。</li>
+              <li>按 2026-03-20 收盘价 36.88 美元计，对应人民币市值约 370.0 亿元，26E/27E 经调整 PE 约 17.1x / 14.3x。</li>
+              <li>评级观点维持中性偏积极，后续仍重点看酒店扩张、零售延展和 RevPAR 修复三条主线能否继续共振。</li>
+            </ul>
+          </div>
+          <div class="subpanel">
+            <h4>风险点</h4>
+            <ul>
+              <li>加盟商开店意愿回落与商旅需求修复偏弱。</li>
+              <li>零售竞争加剧。</li>
+              <li>组织拆分带来的费用压力，以及 RevPAR 修复节奏低于预期。</li>
+            </ul>
+          </div>
+        </div>
+        <a class="source-link" href="./亚朵_2025年报及公司交流核心要点_20260323.md">查看原始点评文档</a>
+      </div>
+    </div>
+
+    <div class="foot">
+      <p>
+        说明：本 HTML 为内部阅读版汇总，数据口径已与最新 markdown 同步；老铺黄金采用中性偏乐观情形作为主展示口径，亚朵 2027E 收入为基于卖方模型假设的推算。
+        如需下一步用于正式汇报，我可以继续把这页扩成“可投屏版”或“可导出 PDF 的董事会风格版”。
+      </p>
+    </div>
+  </div>
+</body>
+</html>

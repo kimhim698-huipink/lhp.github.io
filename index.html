@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>消费投研分享页</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: #2b241d;
+      background: linear-gradient(180deg, #f8f4ec 0%, #efe7da 100%);
+    }
+    .wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+    }
+    .hero {
+      padding: 28px 30px;
+      border-radius: 28px;
+      background: rgba(255,255,255,0.8);
+      box-shadow: 0 18px 50px rgba(43, 36, 29, 0.08);
+    }
+    h1, h2 {
+      margin: 0;
+      font-family: "Songti SC", "STSong", serif;
+    }
+    h1 {
+      font-size: 42px;
+      line-height: 1.1;
+      margin-top: 12px;
+    }
+    p {
+      color: #65594d;
+      line-height: 1.8;
+      font-size: 15px;
+    }
+    .eyebrow {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: #efe6d7;
+      color: #7b664d;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      margin-top: 24px;
+    }
+    .card {
+      padding: 22px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.78);
+      box-shadow: 0 12px 36px rgba(43, 36, 29, 0.06);
+    }
+    .cta {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: #8e5b2e;
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    ul {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: #65594d;
+      line-height: 1.8;
+    }
+    .list {
+      margin-top: 22px;
+    }
+    .list a {
+      display: block;
+      padding: 16px 18px;
+      margin-top: 10px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.75);
+      text-decoration: none;
+      color: #2b241d;
+      box-shadow: 0 8px 22px rgba(43, 36, 29, 0.05);
+    }
+    .meta {
+      display: block;
+      margin-top: 4px;
+      color: #7b6f63;
+      font-size: 13px;
+    }
+    @media (max-width: 720px) {
+      .grid { grid-template-columns: 1fr; }
+      h1 { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <span class="eyebrow">Daily Research Share</span>
+      <h1>消费投研分享页</h1>
+      <p>这里用于对外或微信群分享每日整理后的消费公司年报点评与交流汇总。当前首页默认展示最新一期链接，后续每天只需要新增一个日期目录并更新首页。</p>
+      <div class="grid">
+        <div class="card">
+          <h2>最新一期</h2>
+          <p>2026-03-23 版本已整理完成，首页正文中老铺黄金排在最前，适合直接复制 GitHub Pages 链接发微信群。</p>
+          <a class="cta" href="./2026-03-23/">打开 2026-03-23 汇总页</a>
+        </div>
+        <div class="card">
+          <h2>后续更新方法</h2>
+          <ul>
+            <li>新增一个日期目录，例如 `2026-03-24/`。</li>
+            <li>把当天汇总 HTML 放成该目录下的 `index.html`。</li>
+            <li>把本首页的“最新一期”链接改到新日期。</li>
+            <li>提交并推送仓库，链接保持不变。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="list">
+      <a href="./2026-03-23/">
+        <strong>2026-03-23 | 消费公司年报与交流汇总</strong>
+        <span class="meta">覆盖老铺黄金、乐舒适、布鲁可、锅圈、巨子生物、亚朵</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

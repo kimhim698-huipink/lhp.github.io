@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="color-scheme" content="light">
+  <title>MyHOT · 朋友阅读版</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23116b79'/%3E%3Cpath d='M17 42V22l15 15 15-15v20' fill='none' stroke='white' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#/selected"><span class="brand-dot"></span>MyHOT</a>
+      <p class="sidebar-caption">朋友阅读版</p>
+      <nav aria-label="主导航">
+        <span class="nav-label">内容</span>
+        <a href="#/selected" data-nav="selected"><span class="nav-icon">✦</span>精选</a>
+        <a href="#/research" data-nav="research"><span class="nav-icon">▣</span>私人阅读</a>
+        <a href="#/all" data-nav="all"><span class="nav-icon">≡</span>全部 AI 动态</a>
+        <a href="#/hot" data-nav="hot"><span class="nav-icon">♨</span>热点榜</a>
+        <a href="#/daily" data-nav="daily"><span class="nav-icon">▤</span>AI 日报</a>
+        <a href="#/topics" data-nav="topics"><span class="nav-icon">▦</span>主题</a>
+        <a href="#/starred" data-nav="starred"><span class="nav-icon">☆</span>收藏</a>
+        <span class="nav-label nav-label-second">更多</span>
+        <a href="https://aihot.news/leaderboard" target="_blank" rel="noopener noreferrer"><span class="nav-icon">▥</span>模型榜 ↗</a>
+        <a href="#/about" data-nav="about"><span class="nav-icon">ⓘ</span>关于</a>
+      </nav>
+      <div class="sidebar-foot"><span class="readonly-pill">只读分享</span><p>打开链接即可阅读，无需注册或登录。来源平台原文仍按各平台权限访问。</p></div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar">
+        <button class="menu-button" id="menu-button" type="button" aria-label="打开导航" aria-expanded="false">☰</button>
+        <div class="topbar-name">MyHOT <span>朋友阅读版</span></div>
+        <div class="topbar-right"><span id="sync-label">正在读取数据</span><span class="readonly-pill">只读</span></div>
+      </header>
+      <main id="app" tabindex="-1"><div class="loading">正在读取看板…</div></main>
+    </div>
+  </div>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a47be7d29be04ca0',t:'MTc5MTUzMzM5MQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

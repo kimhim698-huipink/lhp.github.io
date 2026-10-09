@@ -1,0 +1,95 @@
+name: Publish MyHOT snapshot
+
+on:
+  push:
+    paths:
+      - .github/workflows/myhot-snapshot.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download public MyHOT snapshot
+        run: |
+          python3 - <<'PY'
+          import json
+          import re
+          import shutil
+          import time
+          from concurrent.futures import ThreadPoolExecutor, as_completed
+          from pathlib import Path
+          from urllib.request import Request, urlopen
+
+          base = "https://myhot-friends-reading.kimhim698.chatgpt.site/"
+          target = Path("myhot")
+          temp = Path("myhot-download")
+          if temp.exists():
+              shutil.rmtree(temp)
+          temp.mkdir()
+
+          def get(path):
+              for attempt in range(4):
+                  try:
+                      request = Request(base + path, headers={"User-Agent": "MyHOT-snapshot-mirror/1.0"})
+                      with urlopen(request, timeout=45) as response:
+                          if response.status != 200:
+                              raise RuntimeError(f"{path}: HTTP {response.status}")
+                          data = response.read()
+                      if not data or data.lstrip().startswith(b"<!doctype html") and path.endswith(".json"):
+                          raise RuntimeError(f"{path}: invalid JSON response")
+                      return path, data
+                  except Exception:
+                      if attempt == 3:
+                          raise
+                      time.sleep(2 ** attempt)
+
+          essentials = ["index.html", "styles.css", "app.js", "data/snapshot.json", "data/all.json", "data/research.json"]
+          with ThreadPoolExecutor(max_workers=6) as pool:
+              for path, data in pool.map(get, essentials):
+                  output = temp / path
+                  output.parent.mkdir(parents=True, exist_ok=True)
+                  output.write_bytes(data)
+
+          snapshot = json.loads((temp / "data/snapshot.json").read_text(encoding="utf-8"))
+          research = json.loads((temp / "data/research.json").read_text(encoding="utf-8"))
+          if len(research) != snapshot["researchTotal"]:
+              raise RuntimeError("Research total changed during export")
+          if sum(row.get("id") == "mg7kl87tlavv934ntlam6xgwu" for row in research) != 1:
+              raise RuntimeError("Verified Grok Bot item missing")
+          ids = [row["id"] for row in research if row.get("hasBody")]
+          if len(ids) != snapshot["detailTotal"] or any(not re.fullmatch(r"[a-z0-9]{1,64}", item) for item in ids):
+              raise RuntimeError("Detail list is inconsistent")
+
+          paths = [f"data/research/{item}.json" for item in ids]
+          with ThreadPoolExecutor(max_workers=12) as pool:
+              futures = {pool.submit(get, path): path for path in paths}
+              for future in as_completed(futures):
+                  path, data = future.result()
+                  detail = json.loads(data)
+                  if detail.get("id") != Path(path).stem:
+                      raise RuntimeError(f"Detail ID mismatch: {path}")
+                  output = temp / path
+                  output.parent.mkdir(parents=True, exist_ok=True)
+                  output.write_bytes(data)
+
+          if target.exists():
+              shutil.rmtree(target)
+          temp.rename(target)
+          print(f"Mirrored {snapshot['researchTotal']} research entries and {len(ids)} details")
+          PY
+      - name: Commit snapshot
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A myhot
+          if git diff --cached --quiet; then
+            echo 'Snapshot already current'
+          else
+            git commit -m 'Publish MyHOT read-only snapshot'
+            git push
+          fi

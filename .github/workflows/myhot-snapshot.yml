@@ -65,12 +65,20 @@ jobs:
               if isinstance(value, list):
                   return any(has_private_body(item) for item in value)
               return False
+          def has_private_excerpt(value):
+              if isinstance(value, dict):
+                  if value.get("access") == "source_account_required" and (value.get("excerpt") or value.get("summary")):
+                      return True
+                  return any(has_private_excerpt(item) for item in value.values())
+              if isinstance(value, list):
+                  return any(has_private_excerpt(item) for item in value)
+              return False
           if any(has_private_body(value) for value in (snapshot, research, all_items)):
               raise RuntimeError("Full research text found in the public snapshot")
+          if any(has_private_excerpt(value) for value in (snapshot, research, all_items)):
+              raise RuntimeError("Private source excerpts found in the public snapshot")
           if len(research) != snapshot["researchTotal"]:
               raise RuntimeError("Research total changed during export")
-          if any(row.get("bodyText") or row.get("excerpt") for row in research if row.get("sourceId", "").startswith(("alphapai-", "alphaengine-", "wind-"))):
-              raise RuntimeError("Private source text found in the public snapshot")
           if (temp / "data/research").exists():
               raise RuntimeError("Private research details must not be mirrored")
 

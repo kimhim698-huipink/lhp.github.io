@@ -18,7 +18,6 @@ jobs:
         run: |
           python3 - <<'PY'
           import json
-          import re
           import shutil
           import time
           from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -57,30 +56,28 @@ jobs:
 
           snapshot = json.loads((temp / "data/snapshot.json").read_text(encoding="utf-8"))
           research = json.loads((temp / "data/research.json").read_text(encoding="utf-8"))
+          all_items = json.loads((temp / "data/all.json").read_text(encoding="utf-8"))
+          def has_private_body(value):
+              if isinstance(value, dict):
+                  if any(key in value for key in ("bodyText", "bodyOriginal", "aiSummaryV3", "mtSummary")):
+                      return True
+                  return any(has_private_body(item) for item in value.values())
+              if isinstance(value, list):
+                  return any(has_private_body(item) for item in value)
+              return False
+          if any(has_private_body(value) for value in (snapshot, research, all_items)):
+              raise RuntimeError("Full research text found in the public snapshot")
           if len(research) != snapshot["researchTotal"]:
               raise RuntimeError("Research total changed during export")
-          if sum(row.get("id") == "mg7kl87tlavv934ntlam6xgwu" for row in research) != 1:
-              raise RuntimeError("Verified Grok Bot item missing")
-          ids = [row["id"] for row in research if row.get("hasBody")]
-          if len(ids) != snapshot["detailTotal"] or any(not re.fullmatch(r"[a-z0-9]{1,64}", item) for item in ids):
-              raise RuntimeError("Detail list is inconsistent")
-
-          paths = [f"data/research/{item}.json" for item in ids]
-          with ThreadPoolExecutor(max_workers=12) as pool:
-              futures = {pool.submit(get, path): path for path in paths}
-              for future in as_completed(futures):
-                  path, data = future.result()
-                  detail = json.loads(data)
-                  if detail.get("id") != Path(path).stem:
-                      raise RuntimeError(f"Detail ID mismatch: {path}")
-                  output = temp / path
-                  output.parent.mkdir(parents=True, exist_ok=True)
-                  output.write_bytes(data)
+          if any(row.get("bodyText") or row.get("excerpt") for row in research if row.get("sourceId", "").startswith(("alphapai-", "alphaengine-", "wind-"))):
+              raise RuntimeError("Private source text found in the public snapshot")
+          if (temp / "data/research").exists():
+              raise RuntimeError("Private research details must not be mirrored")
 
           if target.exists():
               shutil.rmtree(target)
           temp.rename(target)
-          print(f"Mirrored {snapshot['researchTotal']} research entries and {len(ids)} details")
+          print(f"Mirrored {snapshot['researchTotal']} research indexes without private details")
           PY
       - name: Commit snapshot
         run: |

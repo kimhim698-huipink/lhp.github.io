@@ -41,7 +41,7 @@
     const labels = item.tags?.length ? `<div class="tag-row">${item.tags.slice(0, 4).map(badge).join("")}</div>` : "";
     return `<article class="card"><div class="card-meta"><span class="provider">${esc(source)}</span><span>${esc(published)}</span>${research ? `<span>${esc(item.contentLabel || item.evidence || "研究资料")}</span>` : ""}</div>
       <a class="card-title" href="${itemHref(item)}">${esc(item.title)}</a>${summary ? `<p class="card-summary">${esc(truncate(summary, 620))}</p>` : ""}${labels}
-      <div class="card-actions"><a href="${itemHref(item)}">${research ? "阅读纪要" : "查看动态"}</a>${sourceHref(item) ? `<a href="${esc(sourceHref(item))}" target="_blank" rel="noopener noreferrer">来源页 ↗</a>` : ""}<button class="save ${saved ? "active" : ""}" type="button" data-fav="${esc(item.id)}" aria-label="${saved ? "取消收藏" : "收藏"}">${saved ? "★" : "☆"}</button></div></article>`;
+      <div class="card-actions"><a href="${itemHref(item)}">${research ? "查看资料" : "查看动态"}</a>${sourceHref(item) ? `<a href="${esc(sourceHref(item))}" target="_blank" rel="noopener noreferrer">${research ? "去来源平台阅读 ↗" : "来源页 ↗"}</a>` : ""}<button class="save ${saved ? "active" : ""}" type="button" data-fav="${esc(item.id)}" aria-label="${saved ? "取消收藏" : "收藏"}">${saved ? "★" : "☆"}</button></div></article>`;
   }
 
   function sourceStatus() {
@@ -49,16 +49,15 @@
     return `<div class="source-grid">${list.map((source) => {
       const aiHotItems = source.provider === "aihot" ? state.all.filter((item) => item.provider === "aihot") : null;
       const total = aiHotItems ? aiHotItems.length : source.count ?? 0;
-      const ready = aiHotItems ? aiHotItems.filter((item) => item.summary).length : source.ready ?? 0;
-      return `<div class="source-box"><strong>${esc(source.label || source.provider)}</strong><b>${esc(total)}</b><span>可读 ${esc(ready)} 条 · 更新 ${esc(date(source.lastSyncedAt))}</span><p>${esc(source.note || "")}</p></div>`;
+      return `<div class="source-box"><strong>${esc(source.label || source.provider)}</strong><b>${esc(total)}</b><span>已收录 · 更新 ${esc(date(source.lastSyncedAt))}</span><p>${source.provider === "aihot" ? "公开动态可直接阅读" : "原文请按来源平台权限访问"}</p></div>`;
     }).join("")}</div>`;
   }
 
   function selected() {
     const hub = state.snapshot.hubs.selected;
     return titleBlock("MYHOT · SHARE", "精选", "AI 产业动态与投资研究，按来源保留原始阅读入口。", `${state.snapshot.researchTotal.toLocaleString()} 份研究 · ${publicCount().toLocaleString()} 条公开动态`)
-      + `<div class="stat-row"><div class="stat"><strong>${state.snapshot.researchTotal.toLocaleString()}</strong><span>私人研究资料</span></div><div class="stat"><strong>${state.snapshot.detailTotal.toLocaleString()}</strong><span>有可读正文或纪要</span></div><div class="stat"><strong>${publicCount().toLocaleString()}</strong><span>公开 AI 动态</span></div><div class="stat"><strong>${esc(hub.themes?.length || 0)}</strong><span>产业主题</span></div></div>`
-      + `<div class="two-col"><section><div class="section-heading"><h2>研究优先读</h2><a href="#/research">查看全部</a></div><div class="card-list">${hub.research.slice(0, 12).map(card).join("")}</div></section><section><div class="section-heading"><h2>公开 AI 动态</h2><a href="#/all">查看全部</a></div><div class="card-list">${hub.publicItems.slice(0, 12).map(card).join("")}</div></section></div>`
+      + `<div class="stat-row"><div class="stat"><strong>${state.snapshot.researchTotal.toLocaleString()}</strong><span>研究资料索引</span></div><div class="stat"><strong>${state.snapshot.detailTotal.toLocaleString()}</strong><span>本站可读公开摘要</span></div><div class="stat"><strong>${publicCount().toLocaleString()}</strong><span>公开 AI 动态</span></div><div class="stat"><strong>${esc(hub.themes?.length || 0)}</strong><span>产业主题</span></div></div>`
+      + `<div class="two-col"><section><div class="section-heading"><h2>研究优先看</h2><a href="#/research">查看全部</a></div><div class="card-list">${hub.research.slice(0, 12).map(card).join("")}</div></section><section><div class="section-heading"><h2>公开 AI 动态</h2><a href="#/all">查看全部</a></div><div class="card-list">${hub.publicItems.slice(0, 12).map(card).join("")}</div></section></div>`
       + `<div class="section-heading"><h2>来源覆盖</h2></div>${sourceStatus()}`;
   }
 
@@ -101,11 +100,11 @@
     const theme = route().params.get("theme") || "";
     const items = filterItems(state.all, "all", theme);
     const themeName = state.snapshot.hubs.topics.themes?.find((item) => item.id === theme)?.name || theme;
-    return titleBlock("ALL AI", theme ? `全部 AI 动态 · ${themeName}` : "全部 AI 动态", "公开资讯与私人研究统一按时间查阅，点击可进入详情。", `${state.all.length.toLocaleString()} 条已接入`) + toolbar("all") + paged(items);
+    return titleBlock("ALL AI", theme ? `全部 AI 动态 · ${themeName}` : "全部 AI 动态", "公开资讯与研究目录统一按时间查阅；研究原文按来源平台权限访问。", `${state.all.length.toLocaleString()} 条已接入`) + toolbar("all") + paged(items);
   }
   function research() {
     const items = filterItems(state.research, "research");
-    return titleBlock("PRIVATE RESEARCH", "私人研究阅读", "AlphaPai、AlphaEngine、Wind 与官方产品动态的已接入摘要和纪要。部分来源原文需各自账号和权限。", `${state.research.length.toLocaleString()} 份资料`) + toolbar("research") + `<p class="small-note">研究重要性与传播热度分开记录；未知分数保留为未知。朋友阅读版不提供修改评分。</p>` + paged(items);
+    return titleBlock("PRIVATE RESEARCH", "私人研究索引", "查看 AlphaPai、AlphaEngine、Wind 资料的标题、时间和来源入口；原文需来源平台账号与权限。", `${state.research.length.toLocaleString()} 份资料`) + toolbar("research") + `<p class="small-note">公开分享页不提供这些平台的私有摘要、纪要或正文。研究重要性与传播热度分开记录。</p>` + paged(items);
   }
   function hot() {
     const hub = state.snapshot.hubs.hot;
@@ -137,9 +136,9 @@
   function about() {
     const s = state.snapshot;
     return titleBlock("ABOUT", "关于这份看板", "MyHOT 的公开只读朋友阅读版。")
-      + `<div class="notice"><strong>分享方式：</strong>把此网站的网址发给朋友，对方直接打开即可阅读，无需 ChatGPT 或邮箱账号，也无需连接你的电脑。网页不含来源平台密码、浏览器会话或本机地址。</div>`
-      + `<div class="stat-row"><div class="stat"><strong>${s.researchTotal.toLocaleString()}</strong><span>研究资料</span></div><div class="stat"><strong>${s.allTotal.toLocaleString()}</strong><span>全部动态</span></div><div class="stat"><strong>${s.detailTotal.toLocaleString()}</strong><span>可读详情</span></div><div class="stat"><strong>只读</strong><span>朋友无法改动你的评分</span></div></div>`
-      + `<p class="small-note">本次云端快照生成于 ${esc(date(s.exportedAt))}。源平台原文按收件人的平台账号权限访问；新资料会在下一次同步后进入分享版。</p>`;
+      + `<div class="notice"><strong>分享方式：</strong>把此网站的网址发给朋友，对方直接打开公开动态和研究索引，无需 ChatGPT 或邮箱账号。AlphaPai、AlphaEngine、Wind 的私有摘要、纪要及正文不在此站发布；阅读原文需朋友自己的来源平台账号与权限。</div>`
+      + `<div class="stat-row"><div class="stat"><strong>${s.researchTotal.toLocaleString()}</strong><span>研究资料索引</span></div><div class="stat"><strong>${s.allTotal.toLocaleString()}</strong><span>全部动态</span></div><div class="stat"><strong>${s.detailTotal.toLocaleString()}</strong><span>本站可读公开摘要</span></div><div class="stat"><strong>只读</strong><span>朋友无法改动你的评分</span></div></div>`
+      + `<p class="small-note">本次云端快照生成于 ${esc(date(s.exportedAt))}。新资料会在下一次同步后进入分享版。</p>`;
   }
 
   function readableBody(value) {
@@ -162,21 +161,15 @@
   function detailFrame(item, body, isResearch) {
     const source = item.sourceName || item.source || item.provider || "来源待核";
     const link = sourceHref(item);
-    const text = body || item.summary || item.excerpt || "目前只保存标题和来源信息。";
-    const label = item.contentLabel || (isResearch ? "来源摘要 / 纪要" : "AI 动态摘要");
-    return `<div class="detail"><a class="back" href="${isResearch ? "#/research" : "#/all"}">← 返回列表</a><p class="eyebrow">${esc(source)} · ${esc(label)}</p><h1>${esc(item.title)}</h1><div class="detail-meta"><span>来源时间：${esc(item.publishedAt ? date(item.publishedAt) : item.sourceDate ? date(item.sourceDate, true) : "待核")}</span><span>资料类型：${esc(item.evidenceLevel || item.evidence || "待核")}</span>${item.review?.importance != null ? `<span>研究重要性：${esc(item.review.importance)}/100</span>` : ""}</div>${link ? `<a class="source-link" href="${esc(link)}" target="_blank" rel="noopener noreferrer">打开来源页 ↗</a>` : `<p class="small-note">尚无已核验的来源直链。</p>`}<div class="detail-body">${readableBody(text)}</div><p class="small-note">请以来源原文核验关键数字、判断和限定条件。</p></div>`;
+    const restricted = isResearch && item.access === "source_account_required";
+    const text = restricted ? "" : body || item.summary || item.excerpt || "目前只保存标题和来源信息。";
+    const label = restricted ? "研究资料索引" : item.contentLabel || (isResearch ? "公开摘要" : "AI 动态摘要");
+    return `<div class="detail"><a class="back" href="${isResearch ? "#/research" : "#/all"}">← 返回列表</a><p class="eyebrow">${esc(source)} · ${esc(label)}</p><h1>${esc(item.title)}</h1><div class="detail-meta"><span>来源时间：${esc(item.publishedAt ? date(item.publishedAt) : item.sourceDate ? date(item.sourceDate, true) : "待核")}</span><span>资料类型：${esc(item.evidenceLevel || item.evidence || "待核")}</span>${item.review?.importance != null ? `<span>研究重要性：${esc(item.review.importance)}/100</span>` : ""}</div>${link ? `<a class="source-link" href="${esc(link)}" target="_blank" rel="noopener noreferrer">${restricted ? "去来源平台阅读 ↗" : "打开来源页 ↗"}</a>` : `<p class="small-note">尚无已核验的来源直链。</p>`}${restricted ? `<div class="notice">这份资料的摘要、纪要和正文保存在来源平台；请用你自己的来源平台账号和权限阅读。</div>` : `<div class="detail-body">${readableBody(text)}</div><p class="small-note">请以来源原文核验关键数字、判断和限定条件。</p>`}</div>`;
   }
-  async function researchDetail(id) {
+  function researchDetail(id) {
     const item = state.researchById.get(id);
     if (!item) { app.innerHTML = `<div class="empty">未找到这份资料。</div>`; return; }
     app.innerHTML = detailFrame(item, item.excerpt, true);
-    if (!item.hasBody) return;
-    try {
-      const response = await fetch(`./data/research/${encodeURIComponent(id)}.json`, { cache: "no-store" });
-      if (!response.ok) throw new Error("详情不可用");
-      const detail = await response.json();
-      if (route().id === id) app.innerHTML = detailFrame(item, detail.bodyText || item.excerpt, true);
-    } catch { if (route().id === id) app.innerHTML = detailFrame(item, item.excerpt, true); }
   }
   function itemDetail(id) {
     const item = state.allById.get(id) || state.hubById.get(id);

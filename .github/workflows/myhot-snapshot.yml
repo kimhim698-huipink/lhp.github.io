@@ -1,5 +1,7 @@
 name: Publish MyHOT snapshot
 
+# Mirror refreshed after source-level duplicate review (2026-10-12).
+
 on:
   push:
     paths:
